@@ -2,30 +2,32 @@
 
 namespace Rewardful\RewardfulSpark;
 
-use Laravel\Cashier\Billable;
+use Illuminate\Support\Facades\Blade;
+use Spark\Spark;
+use App\Providers\SparkServiceProvider as ServiceProvider;
+use Laravel\Spark\Contracts\Interactions\Settings\PaymentMethod\UpdatePaymentMethod;
+use Rewardful\RewardfulSpark\UpdateStripePaymentMethod;
 
-class UpdateStripePaymentMethod
+class RewardfulServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritdoc}
+     * Bootstrap any application services.
+     *
+     * @return void
      */
-    public function handle($billable, array $data)
+    public function boot(): void
     {
-        // Check if the billable model uses Cashier's Billable trait
-        if (!in_array(Billable::class, class_uses_recursive($billable))) {
-            throw new \Exception('The billable model must use the Billable trait provided by Laravel Cashier.');
-        }
+        $this->publishes([
+            __DIR__ . '/config/rewardful.php' => config_path('rewardful.php'),
+        ], 'rewardful-config');
 
-        // If the billable entity doesn't have a Stripe customer ID, create a new Stripe customer
-        if (!$billable->hasStripeId()) {
-            $billable->createAsStripeCustomer([
-                'metadata' => [
-                    'referral' => $data['referral'] ?? ''
-                ]
-            ]);
-        }
+        $this->publishes([
+            __DIR__ . '/resources/js' => resource_path('js/rewardful'),
+        ], 'rewardful-vue');
 
-        // Update the default payment method
-        $billable->updateDefaultPaymentMethod($data['stripe_payment_method']);
+        Blade::directive('rewardful_js', function () {
+            return "<script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>
+            <script async src='https://r.wdfl.co/rw.js' data-rewardful='b03639'></script>";
+        });
     }
 }
