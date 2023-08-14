@@ -1,28 +1,29 @@
 {
-    "name": "rewardful/rewardful-spark",
-    "description": "A package to connect your Spark based application to Rewardful.",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Mina Abadir",
-            "email": "mina@abadir.email"
-        }
-    ],
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "Rewardful\\RewardfulSpark\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Rewardful\\RewardfulSpark\\RewardfulServiceProvider"
-            ]
-        }
-    },
-    "require-dev": {
-        "orchestra/testbench": "^4.0"
-    }
+	"name": "rewardful/rewardful-spark",
+	"description": "A package to connect your Spark based application to Rewardful.",
+	"type": "library",
+	"version": "3.0.2",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Mina Abadir",
+			"email": "mina@abadir.email"
+		}
+	],
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Rewardful\\RewardfulSpark\\": "src/"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Rewardful\\RewardfulSpark\\RewardfulServiceProvider"
+			]
+		}
+	},
+	"require-dev": {
+		"orchestra/testbench": "^4.0"
+	}
 }
